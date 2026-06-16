@@ -62,7 +62,7 @@ ${client.guilds.cache.size}
           [
             {
               name:
-                "🐱 FourCat",
+                "🐱 FourCat beta v.1.0.0",
               type:
                 ActivityType.Playing
             },
