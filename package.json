@@ -1,0 +1,25 @@
+{
+  "name": "fourcat",
+  "version": "1.0.0",
+  "description": "FourCat Discord Bot",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "deploy": "node deploy-commands.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "discord.js": "^14.26.4",
+    "dotenv": "^17.4.2",
+    "mongoose": "^9.7.0",
+    "uuid": "^14.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
