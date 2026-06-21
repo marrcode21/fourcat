@@ -35,8 +35,18 @@ const userSchema =
     },
 
     achievements: {
-      type: Array,
+      type: [String],
       default: []
+    },
+
+    dailyStreak: {
+      type: Number,
+      default: 0
+    },
+
+    lastDaily: {
+      type: Date,
+      default: null
     },
 
     dailyCooldown: {
@@ -50,7 +60,7 @@ const userSchema =
     },
 
     packs: {
-      normal: {
+      common: {
         type: Number,
         default: 0
     },
@@ -67,6 +77,26 @@ const userSchema =
   },
 
     catEggs: {
+      type: Number,
+      default: 0
+    },
+
+    totalTrades: {
+      type: Number,
+      default: 0
+    },
+
+    totalPacksOpened: {
+      type: Number,
+      default: 0
+    },
+
+    casinoWins: {
+      type: Number,
+      default: 0
+    },
+
+    casinoJackpots: {
       type: Number,
       default: 0
     },

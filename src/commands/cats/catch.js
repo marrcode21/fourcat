@@ -53,7 +53,7 @@ if (cooldown) {
       return interaction.reply({
         content:
           "❌ No cat to catch.",
-        ephemeral: true
+        flags: 64
       });
     }
 
@@ -64,7 +64,7 @@ if (cooldown) {
       return interaction.reply({
         content:
           "❌ Someone already caught this cat.",
-        ephemeral: true
+        flags: 64
       });
     }
 

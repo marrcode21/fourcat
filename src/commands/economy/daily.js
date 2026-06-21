@@ -1,5 +1,6 @@
 const {
-  SlashCommandBuilder
+  SlashCommandBuilder,
+  EmbedBuilder
 } = require("discord.js");
 
 const getUser =
@@ -26,8 +27,7 @@ module.exports = {
 
     if (
       user.dailyCooldown &&
-      user.dailyCooldown >
-        now
+      user.dailyCooldown > now
     ) {
       const timeLeft =
         Math.floor(
@@ -46,13 +46,97 @@ module.exports = {
       });
     }
 
+    const rewards = [
+      500,
+      750,
+      1000,
+      1250,
+      1500,
+      2000,
+      3000
+    ];
+
+    // =====================
+    // STREAK SYSTEM
+    // =====================
+
+    if (
+      user.lastDaily
+    ) {
+      const diff =
+        now -
+        user.lastDaily;
+
+      const oneDay =
+        24 *
+        60 *
+        60 *
+        1000;
+
+      if (
+        diff >= oneDay &&
+        diff <
+          oneDay * 2
+      ) {
+        user.dailyStreak++;
+      }
+
+      else if (
+        diff >=
+        oneDay * 2
+      ) {
+        user.dailyStreak = 1;
+      }
+    }
+
+    else {
+      user.dailyStreak = 1;
+    }
+
+    if (
+      user.dailyStreak > 7
+    ) {
+      user.dailyStreak = 7;
+    }
+
     const reward =
-      Math.floor(
-        Math.random() *
-          150
-      ) + 150;
+      rewards[
+        user.dailyStreak -
+          1
+      ];
 
     user.cats += reward;
+
+    // =====================
+    // DAY 7 BONUS
+    // =====================
+
+    let bonusText =
+      "None";
+
+    if (
+      user.dailyStreak ===
+      7
+    ) {
+
+      if (
+        !user.packs
+      ) {
+        user.packs = {};
+      }
+
+      user.packs.rare =
+        (
+          user.packs
+            .rare || 0
+        ) + 1;
+
+      bonusText =
+        "Rare Pack x1";
+    }
+
+    user.lastDaily =
+      now;
 
     user.dailyCooldown =
       new Date(
@@ -63,10 +147,55 @@ module.exports = {
             1000
       );
 
+    const achievementSystem =
+      require(
+        "../../systems/achievementSystem"
+      );
+
+    const unlocked =
+      await achievementSystem(
+        user
+      );
+
     await user.save();
 
-    await interaction.reply(
-      `🐱 You claimed **${reward} cats**!`
-    );
+    const embed =
+      new EmbedBuilder()
+        .setTitle(
+          "📅 Daily Reward"
+        )
+        .setDescription(
+          "Come back every day to build your streak!"
+        )
+        .addFields(
+          {
+            name:
+              "🔥 Streak",
+            value:
+              `${user.dailyStreak}/7`,
+            inline:
+              true
+          },
+          {
+            name:
+              "🐱 Reward",
+            value:
+              `${reward.toLocaleString()} Cats`,
+            inline:
+              true
+          },
+          {
+            name:
+              "🎁 Bonus",
+            value:
+              bonusText,
+            inline:
+              true
+          }
+        );
+
+    await interaction.reply({
+      embeds: [embed]
+    });
   }
 };

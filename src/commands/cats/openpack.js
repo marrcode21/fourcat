@@ -1,13 +1,17 @@
 const {
 SlashCommandBuilder
-} =
-require(
+} = require(
 "discord.js"
 );
 
 const getUser =
 require(
 "../../utils/getUser"
+);
+
+const achievementSystem =
+require(
+"../../systems/achievementSystem"
 );
 
 const rewards = {
@@ -80,52 +84,74 @@ interaction.user.id
 );
 
 const type =
-interaction.options.getString(
-"type"
-);
+  interaction.options.getString(
+    "type"
+  );
 
 if (
-user.packs[
-type
-] <= 0
+  user.packs[
+    type
+  ] <= 0
 ) {
-return interaction.reply({
-content:
-"❌ You do not own this pack.",
-ephemeral:
-true
-});
+  return interaction.reply({
+    content:
+      "❌ You do not own this pack.",
+    flags: 64
+  });
 }
 
 user.packs[
-type
+  type
 ] -= 1;
 
 const pool =
-rewards[
-type
-];
+  rewards[
+    type
+  ];
 
 const reward =
-pool[
-Math.floor(
-Math.random() *
-pool.length
-)
-];
+  pool[
+    Math.floor(
+      Math.random() *
+      pool.length
+    )
+  ];
 
 user.inventory.push(
-reward
+  reward
 );
+
+user.totalPacksOpened +=
+  1;
+
+const unlocked =
+  await achievementSystem(
+    user
+  );
 
 await user.save();
 
-await interaction.reply(
-`🎁 You opened a **${type} pack**!
+let message =
+  `🎁 You opened a **${type} pack**!
 
 You got:
 
-${reward}`
+${reward}`;
+
+if (
+  unlocked.length
+) {
+  message +=
+    `
+
+🏆 Achievement Unlocked:
+
+${unlocked.join("\n")}`;
+}
+
+await interaction.reply(
+  message
 );
+
 }
 };
