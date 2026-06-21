@@ -293,5 +293,9 @@ const embed =
       text:
         "FourCat v1.1.0 • Secret Onde Mande Update"
     });
+
+    await interaction.reply({
+      embeds: [embed]
+    });
   }
 };

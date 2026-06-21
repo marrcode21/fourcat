@@ -104,12 +104,12 @@ const senderMenu =
       "Choose your cat"
     )
     .addOptions(
-      sender.inventory
-        .slice(0, 25)
-        .map(cat => ({
-          label: cat,
-          value: cat
-        }))
+sender.inventory
+  .slice(0, 25)
+  .map((cat, index) => ({
+    label: cat,
+    value: `${cat}_${index}`
+  }))
     );
 
 await interaction.reply({
@@ -147,8 +147,11 @@ senderCollector.on(
       });
     }
 
-    senderCat =
-      i.values[0];
+senderCat =
+  i.values[0]
+    .split("_")
+    .slice(0, -1)
+    .join("_");
 
     await i.update({
       content:
@@ -165,12 +168,12 @@ senderCollector.on(
           "Choose your cat"
         )
         .addOptions(
-          receiver.inventory
-            .slice(0, 25)
-            .map(cat => ({
-              label: cat,
-              value: cat
-            }))
+receiver.inventory
+  .slice(0, 25)
+  .map((cat, index) => ({
+    label: cat,
+    value: `${cat}_${index}`
+  }))
         );
 
     const tradeMsg =
@@ -203,8 +206,11 @@ senderCollector.on(
           });
         }
 
-        receiverCat =
-          j.values[0];
+receiverCat =
+  j.values[0]
+    .split("_")
+    .slice(0, -1)
+    .join("_");
 
         const embed =
           new EmbedBuilder()
