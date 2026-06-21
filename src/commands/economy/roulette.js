@@ -100,15 +100,17 @@ module.exports = {
             `${user.cats.toLocaleString()} 🐱`
         });
 
-    await interaction.deferReply();
+await interaction.reply({
+  content:
+    "🎲 Spinning the roulette wheel..."
+});
 
-    setTimeout(async () => {
-        // hasil roulette
-    }, 2000);
-    
-    await interaction.reply({
-      embeds:
-        [embed]
-    });
+setTimeout(async () => {
+  await interaction.editReply({
+    content: null,
+    embeds: [embed]
+  });
+}, 2000);
+
   }
 };
