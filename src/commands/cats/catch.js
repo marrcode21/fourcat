@@ -82,8 +82,22 @@ if (cooldown) {
         activeCat.spawnTime
       ) / 1000;
 
-    user.cats +=
-      activeCat.cat.reward;
+let reward =
+  reward;
+
+if (
+  user.coffeeBoost &&
+  user.coffeeBoost >
+    Date.now()
+) {
+  reward =
+    Math.floor(
+      reward * 1.5
+    );
+}
+
+user.cats +=
+  reward;
 
     user.totalCatsCaught += 1;
 

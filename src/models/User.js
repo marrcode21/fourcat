@@ -60,7 +60,7 @@ const userSchema =
     },
 
     packs: {
-      common: {
+      normal: {
         type: Number,
         default: 0
     },
@@ -77,6 +77,21 @@ const userSchema =
   },
 
     catEggs: {
+      type: Number,
+      default: 0
+    },
+
+    coffeeBoost: {
+      type: Date,
+      default: null
+    },
+
+    coffeeBeans: {
+      type: Number,
+      default: 0
+    },
+
+    prisms: {
       type: Number,
       default: 0
     },

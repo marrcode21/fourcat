@@ -3,12 +3,14 @@ const {
 } = require("discord.js");
 
 const getUser =
-require("../../utils/getUser");
+  require("../../utils/getUser");
 
 const prices = {
   normal: 100,
   rare: 500,
-  epic: 1500
+  epic: 1500,
+  prism: 250,
+  coffee: 150
 };
 
 module.exports = {
@@ -48,6 +50,18 @@ module.exports = {
                   "Epic Pack",
                 value:
                   "epic"
+              },
+              {
+                name:
+                  "Cat Prism",
+                value:
+                  "prism"
+              },
+              {
+                name:
+                  "Coffee Beans",
+                value:
+                  "coffee"
               }
             )
       ),
@@ -82,14 +96,27 @@ module.exports = {
     user.cats -=
       price;
 
-    user.packs[
-      item
-    ] += 1;
+    switch (item) {
+
+      case "normal":
+      case "rare":
+      case "epic":
+        user.packs[item] += 1;
+        break;
+
+      case "prism":
+        user.prisms += 1;
+        break;
+
+      case "coffee":
+        user.coffeeBeans += 1;
+        break;
+    }
 
     await user.save();
 
     await interaction.reply(
-      `🛒 Bought **${item} pack** for **${price} cats**`
+      `🛒 Bought **${item}** for **${price} cats**`
     );
   }
 };
