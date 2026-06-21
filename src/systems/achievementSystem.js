@@ -38,6 +38,66 @@ module.exports =
     }
 
     if (
+  user.secretCatsCaught >= 1 &&
+  !user.achievements.includes(
+    "onde_mande_hunter"
+  )
+) {
+  user.achievements.push(
+    "onde_mande_hunter"
+  );
+
+  rewards.push(
+    "👑 Onde Mande Hunter"
+  );
+}
+
+if (
+  user.secretCatsCaught >= 10 &&
+  !user.achievements.includes(
+    "onde_mande_collector"
+  )
+) {
+  user.achievements.push(
+    "onde_mande_collector"
+  );
+
+  rewards.push(
+    "🌟 Onde Mande Collector"
+  );
+}
+
+if (
+  user.secretCatsCaught >= 50 &&
+  !user.achievements.includes(
+    "onde_mande_master"
+  )
+) {
+  user.achievements.push(
+    "onde_mande_master"
+  );
+
+  rewards.push(
+    "🔥 Onde Mande Master"
+  );
+}
+
+if (
+  user.secretCatsCaught >= 100 &&
+  !user.achievements.includes(
+    "onde_mande_god"
+  )
+) {
+  user.achievements.push(
+    "onde_mande_god"
+  );
+
+  rewards.push(
+    "⚡ Onde Mande God"
+  );
+}
+
+    if (
       user.totalCatsCaught >= 100 &&
       !user.achievements.includes(
         "100_cats"

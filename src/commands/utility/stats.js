@@ -90,6 +90,13 @@ module.exports = {
               true
           },
           {
+            name: "👑 Secret Cats",
+            value: String(
+            user.secretCatsCaught || 0
+            ),
+            inline: true
+          },
+          {
             name:
               "📚 Collection",
             value:

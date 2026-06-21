@@ -19,6 +19,11 @@ const userSchema =
       default: 0
     },
 
+    secretCatsCaught: {
+      type: Number,
+      default: 0
+    },
+
     fastestCatch: {
       type: Number,
       default: null

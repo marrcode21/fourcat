@@ -4,6 +4,9 @@ const Guild =
 const cats =
 require("../data/cats");
 
+const secretCats =
+  require("../data/secretCats")
+
 const activeCats =
   new Map();
 
@@ -79,8 +82,25 @@ module.exports = client => {
       )
         continue;
 
-      const cat =
-        randomCat();
+let cat;
+
+const isSecret =
+  Math.random() < 0.001;
+
+if (isSecret) {
+  cat =
+    secretCats[
+      Math.floor(
+        Math.random() *
+        secretCats.length
+      )
+    ];
+
+  cat.secret = true;
+} else {
+  cat = randomCat();
+  cat.secret = false;
+}
 
       const spawnTime =
         Date.now();
@@ -112,45 +132,60 @@ const isShiny =
 await channel.send({
   embeds: [
     {
-      title:
-        `${isShiny ? "✨ " : ""}${cat.emoji} A Wild Cat Appeared!`,
-      description:
-        `A **${isShiny ? "Shiny " : ""}${cat.name}** spawned!\nUse \`/catch\` quickly!`,
+title:
+  cat.secret
+    ? "🚨 SECRET CAT APPEARED!"
+    : `${isShiny ? "✨ " : ""}${cat.emoji} A Wild Cat Appeared!`,
+description:
+  cat.secret
+    ? "👑 Onde Mande has appeared!\nUse `/catch` quickly!"
+    : `A **${isShiny ? "Shiny " : ""}${cat.name}** spawned!\nUse \`/catch\` quickly!`,
       image: {
         url:
           cat.image
       },
-      fields: [
-        {
-          name:
-            "Rarity",
-          value:
-            cat.rarity,
-          inline:
-            true
-        },
-        {
-          name:
-            "Reward",
-          value:
-            `${cat.reward} cats`,
-          inline:
-            true
-        },
-        {
-          name:
-            "Variant",
-          value:
-            isShiny
-              ? "✨ Shiny"
-              : "Normal",
-          inline:
-            true
-        }
-      ]
+
+      color:
+        cat.secret
+        ? 0xffd700
+        : undefined,
+
+fields: cat.secret
+  ? [
+      {
+        name: "Type",
+        value: "👑 Secret Cat",
+        inline: true
+      },
+      {
+        name: "Reward",
+        value: "10k - 20k Cats",
+        inline: true
+      }
+    ]
+  : [
+      {
+        name: "Rarity",
+        value: cat.rarity,
+        inline: true
+      },
+      {
+        name: "Reward",
+        value: `${cat.reward} cats`,
+        inline: true
+      },
+      {
+        name: "Variant",
+        value:
+          isShiny
+            ? "✨ Shiny"
+            : "Normal",
+        inline: true
+      }
+    ]
     }
   ]
-});
+})
 
 setTimeout(async () => {
   if (

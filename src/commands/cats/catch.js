@@ -82,8 +82,28 @@ if (cooldown) {
         activeCat.spawnTime
       ) / 1000;
 
-let reward =
-  reward;
+let reward;
+
+if (
+  activeCat.cat.secret
+) {
+  reward =
+    Math.floor(
+      Math.random() *
+      (
+        activeCat.cat.rewardMax -
+        activeCat.cat.rewardMin +
+        1
+      )
+    ) +
+    activeCat.cat.rewardMin;
+
+  user.secretCatsCaught =
+    (user.secretCatsCaught || 0) + 1;
+} else {
+  reward =
+    activeCat.cat.reward;
+}
 
 if (
   user.coffeeBoost &&
@@ -101,11 +121,12 @@ user.cats +=
 
     user.totalCatsCaught += 1;
 
-    user.inventory.push(
-      activeCat.shiny
-        ? `shiny_${activeCat.cat.id}`
-        : activeCat.cat.id
-    );
+user.inventory.push(
+  activeCat.shiny &&
+  !activeCat.cat.secret
+    ? `shiny_${activeCat.cat.id}`
+    : activeCat.cat.id
+);
 
     // Fastest catch
     if (
@@ -139,13 +160,20 @@ user.cats +=
       interaction.channel.id
     );
 
-    await interaction.reply({
-      content:
-        `🎉 ${interaction.user} caught a **${activeCat.cat.name}** in **${catchTime.toFixed(
-          2
-        )}s**!
+const secretText =
+  activeCat.cat.secret
+    ? "\n👑 SECRET ONDE MANDE CAUGHT!"
+    : "";
 
-💰 Reward: **${activeCat.cat.reward} cats**
+await interaction.reply({
+  content:
+`🎉 ${interaction.user} caught a **${activeCat.cat.name}** in **${catchTime.toFixed(
+  2
+)}s**!
+
+${secretText}
+
+💰 Reward: **${reward.toLocaleString()} cats**
 
 ${
   unlocked.length
@@ -153,6 +181,7 @@ ${
 ${unlocked.join("\n")}`
     : ""
 }`
-    });
+});
+
   }
 };

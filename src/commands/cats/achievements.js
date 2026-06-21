@@ -50,6 +50,26 @@ const achievements = {
   jackpot: {
     emoji: "💎",
     name: "Jackpot!"
+  },
+
+  onde_mande_hunter: {
+    emoji: "👑",
+    name: "Onde Mande Hunter"
+  },
+
+  onde_mande_collector: {
+    emoji: "🌟",
+    name: "Onde Mande Collector"
+  },
+
+  onde_mande_master: {
+    emoji: "🔥",
+    name: "Onde Mande Master"
+  },
+
+  onde_mande_god: {
+    emoji: "⚡",
+    name: "Onde Mande God"
   }
 };
 
