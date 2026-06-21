@@ -97,7 +97,7 @@ ${rarityEmoji(
           },
           {
             name: "✨ SHINY CATS",
-            value: shinyList,
+            value: shinyCats,
             inline: false
           },
           {
