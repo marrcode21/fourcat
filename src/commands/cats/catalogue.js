@@ -91,22 +91,19 @@ ${rarityEmoji(
         )
         .addFields(
           {
-            name:
-              "🐱 Normal Cats",
-            value:
-              normalCats
+            name: "🐱 NORMAL CATS",
+            value: normalList,
+            inline: false
           },
           {
-            name:
-              "✨ Shiny Cats",
-            value:
-              shinyCats
+            name: "✨ SHINY CATS",
+            value: shinyList,
+            inline: false
           },
           {
-            name:
-              "👑 Secret Cats",
-            value:
-              secretList
+            name: "👑 SECRET CATS",
+            value: secretList,
+            inline: false
           }
         )
         .setFooter({
