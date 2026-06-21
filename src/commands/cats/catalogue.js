@@ -92,7 +92,7 @@ ${rarityEmoji(
         .addFields(
           {
             name: "🐱 NORMAL CATS",
-            value: normalList,
+            value: normalCats,
             inline: false
           },
           {
