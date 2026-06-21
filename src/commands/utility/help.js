@@ -81,7 +81,58 @@ const commandInfo = {
       "View bot commands.",
     usage:
       "/help"
-  }
+  },
+
+  achievements: {
+  description:
+    "View your unlocked achievements.",
+  usage:
+    "/achievements"
+},
+
+leaderboards: {
+  description:
+    "View top FourCat players.",
+  usage:
+    "/leaderboards"
+},
+
+store: {
+  description:
+    "View shop items.",
+  usage:
+    "/store"
+},
+
+buy: {
+  description:
+    "Buy packs from the store.",
+  usage:
+    "/buy <item>"
+},
+
+openpack: {
+  description:
+    "Open a cat pack.",
+  usage:
+    "/openpack <type>"
+},
+
+brew: {
+  description:
+    "Brew coffee for a catch reward boost.",
+  usage:
+    "/brew",
+  reward:
+    "+50% catch rewards for 30 minutes"
+},
+
+prism: {
+  description:
+    "Convert cats into prism energy.",
+  usage:
+    "/prism"
+}
 };
 
 module.exports = {
@@ -164,73 +215,83 @@ module.exports = {
     }
 
     // normal help
-    const embed =
-      new EmbedBuilder()
-        .setTitle(
-          "🐱 FourCat Help"
-        )
-        .setDescription(
-`Catch cats, collect rare ones, trade with players, and become the best collector!`
-        )
-        .addFields(
-          {
-            name:
-              "🚀 Start Here",
-            value:
+const embed =
+  new EmbedBuilder()
+    .setTitle(
+      "🐱 FourCat Help"
+    )
+    .setDescription(
+`Catch cats, hunt Secret Onde Mande, earn achievements, and become the richest collector!`
+    )
+    .addFields(
+      {
+        name:
+          "🚀 Getting Started",
+        value:
 `/tutorial
 /catch
-/inventory
 /daily
+/inventory
 /stats`
-          },
+      },
 
-          {
-            name:
-              "🐱 Cat Commands",
-            value:
+      {
+        name:
+          "🐱 Cat System",
+        value:
 `/catch
 /catalogue
 /inventory
 /trade
-/stats`
-          },
+/stats
+/achievements`
+      },
 
-          {
-            name:
-              "💰 Economy",
-            value:
+      {
+        name:
+          "💰 Economy",
+        value:
 `/daily
-/casino
-/slots
+/store
+/buy
+/openpack
+/brew
+/prism`
+      },
+
+      {
+        name:
+          "🎰 Casino",
+        value:
+`/slots
 /roulette
-/store`
-          },
+/casino`
+      },
 
-          {
-            name:
-              "🎮 Fun",
-            value:
-`/8ball
-/roll
-/rps
-/tictactoe`
-          },
+      {
+        name:
+          "🏆 Community",
+        value:
+`/leaderboards`
+      },
 
-          {
-            name:
-              "🔎 More Help",
-            value:
-"`/help command:catch`"
-          }
-        )
-        .setFooter({
-          text:
-            "FourCat • Catch them all 🐾"
-        });
+      {
+        name:
+          "👑 Secret Cats",
+        value:
+`Catch rare Onde Mande variants worth up to 20,000 cats.`
+      },
 
-    await interaction.reply({
-      embeds:
-        [embed]
+      {
+        name:
+          "🔎 Detailed Help",
+        value:
+"`/help command_name`"
+      }
+    )
+    .setFooter({
+      text:
+        "FourCat v1.1.0 • Secret Onde Mande Update"
     });
   }
 };
