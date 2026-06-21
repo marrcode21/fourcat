@@ -37,37 +37,154 @@ module.exports = {
           "🎉 FourCat v1.1.0"
         )
         .setDescription(
-`Thank you for playing FourCat!
+`🎉 FourCat v1.1.0 Update
+
+Thank you for playing FourCat!
 
 🚀 New Features
+☕ Brew System
 
-☕ /brew
-🔮 /prism
-🎲 /roulette
+Use /brew to create coffee boosts that increase catch rewards.
+
+🔮 Prism System
+
+Use /prism to convert resources into valuable rewards.
+
+🎰 Slots
+
+Try your luck with /slots.
+
+Match symbols to win Cats and unlock special achievements.
+
+🎲 Roulette
+
+Use /roulette to gamble your Cats.
+
+Double your winnings or lose everything.
+
+🎯 Casino
+
+A brand-new casino experience has been added through /casino.
+
+Multiple gambling options are now available for players who enjoy taking risks.
 
 👑 Secret Cats
-Onde Mande has arrived!
-4 secret variants can now appear.
 
-🏆 New Achievements
+A new Secret rarity has arrived.
+
+Onde Mande
+
+Features:
+• Extremely rare spawn chance
+• 4 custom variants
+• Unique artwork
+• Rewards from 10,000 to 20,000 Cats
+
+Catch one if you're lucky enough to see it.
+
+🏆 Achievement Expansion
+
+New achievement categories added:
+
+Catching
+
+• First Catch
+• Cat Hunter
+• Cat Master
+
+Daily Rewards
+
+• Daily Enjoyer
+• Week Warrior
+
+Trading
+
+• Trader
+
+Packs
+
+• Pack Opener
+
+Casino
+
+• Lucky Cat
+• Jackpot
+
+Secret Cats
+
 • Onde Mande Hunter
 • Onde Mande Collector
 • Onde Mande Master
 • Onde Mande God
 
 📚 Catalogue Update
-Secret Cats added.
+
+• Secret Cats section added
+• Rarity display improved
+• Total cat count added
+• Better visual formatting
 
 📊 Stats Update
-Secret Cat statistics added.
 
-⚡ Coffee Boost
-Catch rewards can now be boosted.
+New statistics:
+• Secret Cats Caught
+• Total Trades
+• Packs Opened
+• Daily Streak Progress
 
-🛠️ Bug Fixes
-Various improvements and balancing changes.
+🤝 Trade Improvements
 
-Happy hunting! 🐱`
+• Better confirmation system
+• Achievement integration
+• Trade progression tracking
+
+🎁 Pack Improvements
+
+• Pack progression support
+• Achievement support
+• Better reward tracking
+
+⚡ Coffee Boost System
+
+Coffee now boosts cat-catching rewards for a limited time.
+
+🛠️ Fixes & Improvements
+
+• Fixed command registration issues
+• Fixed duplicate command problems
+• Fixed interaction response errors
+• Fixed cooldown issues
+• Improved database stability
+• Improved command reliability
+• Improved achievement tracking
+• General performance improvements
+
+📌 Available Commands
+
+/achievements
+/bal
+/brew
+/buy
+/casino
+/catalogue
+/catch
+/daily
+/gift
+/help
+/inventory
+/leaderboards
+/openpack
+/packs
+/ping
+/prism
+/roulette
+/setup
+/slots
+/stats
+/store
+/trade
+
+Happy Hunting! 🐱`
         )
         .setFooter({
           text:
