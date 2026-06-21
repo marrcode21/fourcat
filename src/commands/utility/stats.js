@@ -15,6 +15,11 @@ const cats =
     "../../data/cats"
   );
 
+const secretCats =
+  require(
+    "../../data/secretCats"
+  );
+
 module.exports = {
   data:
     new SlashCommandBuilder()
@@ -33,23 +38,44 @@ module.exports = {
         interaction.user.id
       );
 
-    const uniqueCats =
-      new Set(
-        user.inventory.map(
-          c =>
-            c.replace(
-              "shiny_",
-              ""
-            )
-        )
-      ).size;
+const secretCats =
+  require(
+    "../../data/secretCats"
+  );
 
-    const completion =
-      (
-        uniqueCats /
-        cats.length
-      ) *
-      100;
+const validIds =
+  [
+    ...cats,
+    ...secretCats
+  ].map(
+    cat => cat.id
+  );
+
+const uniqueCats =
+  new Set(
+    user.inventory
+      .map(
+        c =>
+          c.replace(
+            "shiny_",
+            ""
+          )
+      )
+      .filter(
+        id =>
+          validIds.includes(id)
+      )
+  ).size;
+
+const totalCats =
+  cats.length +
+  secretCats.length;
+
+const completion =
+(
+  uniqueCats /
+  totalCats
+) * 100;
 
     const shinyCount =
       user.inventory.filter(
@@ -100,7 +126,7 @@ module.exports = {
             name:
               "📚 Collection",
             value:
-              `${uniqueCats}/${cats.length}
+              `${uniqueCats}/${totalCats}
 (${completion.toFixed(1)}%)`,
             inline:
               true
