@@ -20,7 +20,7 @@ module.exports = {
 
     const isOwner =
       await checkOwner(
-        interaction.member
+        interaction.user.id
       );
 
     if (!isOwner) {

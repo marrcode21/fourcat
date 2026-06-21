@@ -1,19 +1,34 @@
 const {
   SlashCommandBuilder,
   EmbedBuilder
-} = require(
-  "discord.js"
-);
+} = require("discord.js");
 
 const cats =
-  require(
-    "../../data/cats"
-  );
+  require("../../data/cats");
 
 const secretCats =
-  require(
-    "../../data/secretCats"
-  );
+  require("../../data/secretCats");
+
+function rarityEmoji(
+  rarity
+) {
+  switch (rarity) {
+    case "Common":
+      return "⚪ Common";
+
+    case "Rare":
+      return "🔵 Rare";
+
+    case "Epic":
+      return "🟣 Epic";
+
+    case "Legendary":
+      return "🟠 Legendary";
+
+    default:
+      return rarity;
+  }
+}
 
 module.exports = {
   data:
@@ -33,22 +48,21 @@ module.exports = {
       cats
         .map(
           cat =>
-`${cat.emoji}
-**${cat.name}**
-(${cat.rarity})
-💰 ${cat.reward}`
+`${cat.emoji} ${cat.name}
+💰 ${cat.reward.toLocaleString()}
+${rarityEmoji(
+  cat.rarity
+)}`
         )
         .join("\n\n");
 
     const secretList =
       secretCats
         .map(
-          (
-            cat,
-            index
-          ) =>
-`👑 **Onde Mande #${index + 1}**
-💰 ${cat.rewardMin.toLocaleString()} - ${cat.rewardMax.toLocaleString()}`
+          cat =>
+`👑 ${cat.name}
+💰 ${cat.rewardMin.toLocaleString()} - ${cat.rewardMax.toLocaleString()}
+👑 Secret`
         )
         .join("\n\n");
 
@@ -56,6 +70,9 @@ module.exports = {
       new EmbedBuilder()
         .setTitle(
           "📚 FourCat Catalogue"
+        )
+        .setDescription(
+          "Collect every cat in FourCat!"
         )
         .addFields(
           {
@@ -70,7 +87,14 @@ module.exports = {
             value:
               secretList
           }
-        );
+        )
+        .setFooter({
+          text:
+            `Total Cats: ${
+              cats.length +
+              secretCats.length
+            }`
+        });
 
     await interaction.reply({
       embeds: [embed]
