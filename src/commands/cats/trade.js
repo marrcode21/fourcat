@@ -18,6 +18,12 @@ require(
 "../../systems/achievementSystem"
 );
 
+const cats =
+require("../../data/cats");
+
+const secretCats =
+require("../../data/secretCats")
+
 module.exports = {
 data:
 new SlashCommandBuilder()
@@ -106,10 +112,33 @@ const senderMenu =
     .addOptions(
 sender.inventory
   .slice(0, 25)
-  .map((cat, index) => ({
-    label: cat,
-    value: `${cat}_${index}`
-  }))
+  .map((catId, index) => {
+
+    const cat =
+      [...cats, ...secretCats]
+        .find(
+          c => c.id === catId
+        );
+
+return {
+  label:
+    cat
+      ? `${cat.emoji} ${cat.name}`
+      : catId,
+
+  description:
+    cat
+      ? (
+          cat.secret
+            ? "Secret Cat"
+            : cat.rarity
+        )
+      : "Unknown",
+
+  value:
+    String(index)
+};
+  })
     );
 
 await interaction.reply({
@@ -130,8 +159,8 @@ const senderCollector =
     time: 60000
   });
 
-let senderCat;
-let receiverCat;
+let senderIndex;
+let receiverIndex;
 
 senderCollector.on(
   "collect",
@@ -147,11 +176,11 @@ senderCollector.on(
       });
     }
 
-senderCat =
-  i.values[0]
-    .split("_")
-    .slice(0, -1)
-    .join("_");
+senderIndex =
+  Number(i.values[0]);
+
+const senderCat =
+  sender.inventory[senderIndex];
 
     await i.update({
       content:
@@ -170,10 +199,33 @@ senderCat =
         .addOptions(
 receiver.inventory
   .slice(0, 25)
-  .map((cat, index) => ({
-    label: cat,
-    value: `${cat}_${index}`
-  }))
+  .map((catId, index) => {
+
+    const cat =
+      [...cats, ...secretCats]
+        .find(
+          c => c.id === catId
+        );
+
+return {
+  label:
+    cat
+      ? `${cat.emoji} ${cat.name}`
+      : catId,
+
+  description:
+    cat
+      ? (
+          cat.secret
+            ? "Secret Cat"
+            : cat.rarity
+        )
+      : "Unknown",
+
+  value:
+    String(index)
+};
+  })
         );
 
     const tradeMsg =
@@ -206,42 +258,68 @@ receiver.inventory
           });
         }
 
-receiverCat =
-  j.values[0]
-    .split("_")
-    .slice(0, -1)
-    .join("_");
+receiverIndex =
+  Number(j.values[0]);
 
-        const embed =
-          new EmbedBuilder()
-            .setTitle(
-              "🤝 Trade Confirmation"
-            )
-            .setDescription(
+const receiverCat =
+  receiver.inventory[receiverIndex];
 
-`${interaction.user}
-offers:
-**${senderCat}**
+const senderCatData =
+  [...cats, ...secretCats]
+    .find(
+      c => c.id === senderCat
+    );
 
-${target}
-offers:
-**${receiverCat}**`
-);
+const receiverCatData =
+  [...cats, ...secretCats]
+    .find(
+      c => c.id === receiverCat
+    );
 
-        const confirmRow =
-          new ActionRowBuilder()
-            .addComponents(
-              new ButtonBuilder()
-                .setCustomId(
-                  `accept_${tradeId}`
-                )
-                .setLabel(
-                  "Confirm"
-                )
-                .setStyle(
-                  ButtonStyle.Success
-                )
-            );
+const embed =
+  new EmbedBuilder()
+    .setTitle(
+      "🤝 Trade Confirmation"
+    )
+    .setDescription(
+`### ${interaction.user.username}
+
+${senderCatData.emoji} **${senderCatData.name}**
+${senderCatData.secret ? "👑 Secret Cat" : senderCatData.rarity}
+
+⬇️ Trade For ⬇️
+
+### ${target.username}
+
+${receiverCatData.emoji} **${receiverCatData.name}**
+${receiverCatData.secret ? "👑 Secret Cat" : receiverCatData.rarity}`
+    );
+
+const confirmRow =
+  new ActionRowBuilder()
+    .addComponents(
+      new ButtonBuilder()
+        .setCustomId(
+          `accept_${tradeId}`
+        )
+        .setLabel(
+          "✅ Confirm"
+        )
+        .setStyle(
+          ButtonStyle.Success
+        ),
+
+      new ButtonBuilder()
+        .setCustomId(
+          `cancel_${tradeId}`
+        )
+        .setLabel(
+          "❌ Cancel"
+        )
+        .setStyle(
+          ButtonStyle.Danger
+        )
+    );
 
         await j.update({
           embeds: [embed],
@@ -258,46 +336,40 @@ offers:
         const confirmed =
           new Set();
 
-        confirmCollector.on(
-          "collect",
-          async k => {
-            if (
-              ![
-                interaction.user.id,
-                target.id
-              ].includes(
-                k.user.id
-              )
-            ) {
-              return;
-            }
+confirmCollector.on(
+  "collect",
+  async k => {
 
-            confirmed.add(
-              k.user.id
-            );
+    if (
+      k.customId ===
+      `cancel_${tradeId}`
+    ) {
+      confirmCollector.stop();
 
-            await k.reply({
-              content:
-                "✅ Confirmed",
-              flags: 64
-            });
+      return tradeMsg.edit({
+        content:
+          "❌ Trade cancelled.",
+        embeds: [],
+        components: []
+      });
+    }
 
-            if (
-              confirmed.size !==
-              2
-            ) {
-              return;
-            }
+    if (
+      ![
+        interaction.user.id,
+        target.id
+      ].includes(
+        k.user.id
+      )
+    ) {
+      return;
+    }
 
-            const sIndex =
-              sender.inventory.indexOf(
-                senderCat
-              );
+const sIndex =
+  senderIndex;
 
-            const rIndex =
-              receiver.inventory.indexOf(
-                receiverCat
-              );
+const rIndex =
+  receiverIndex;
 
             if (
               sIndex === -1 ||
