@@ -204,7 +204,10 @@ const senderCatName =
     "shiny_"
   )
     ? `✨ Shiny ${senderCatData.name}`
-    : `${senderCatData.emoji} ${senderCatData.name}`;
+    : `${senderCat.startsWith("shiny_")
+  ? "✨ "
+  : ""
+}${senderCatData.emoji} ${senderCatData.name}`;
 
     await i.update({
       content:
@@ -298,17 +301,72 @@ receiverIndex =
 const receiverCat =
   receiver.inventory[receiverIndex];
 
+const senderBaseId =
+  senderCat.startsWith(
+    "shiny_"
+  )
+    ? senderCat.replace(
+        "shiny_",
+        ""
+      )
+    : senderCat;
+
+const receiverBaseId =
+  receiverCat.startsWith(
+    "shiny_"
+  )
+    ? receiverCat.replace(
+        "shiny_",
+        ""
+      )
+    : receiverCat;
+
 const senderCatData =
   [...cats, ...secretCats]
     .find(
-      c => c.id === senderCat
+      c =>
+        c.id ===
+        senderBaseId
     );
 
 const receiverCatData =
   [...cats, ...secretCats]
     .find(
-      c => c.id === receiverCat
+      c =>
+        c.id ===
+        receiverBaseId
     );
+
+if (
+  !senderCatData ||
+  !receiverCatData
+) {
+  return j.reply({
+    content:
+      "❌ Cat data not found.",
+    flags: 64
+  });
+}
+
+console.log(
+  "senderCat:",
+  senderCat
+);
+
+console.log(
+  "receiverCat:",
+  receiverCat
+);
+
+console.log(
+  "senderCatData:",
+  senderCatData
+);
+
+console.log(
+  "receiverCatData:",
+  receiverCatData
+);
 
 const embed =
   new EmbedBuilder()

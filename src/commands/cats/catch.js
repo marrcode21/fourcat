@@ -103,6 +103,15 @@ if (
 } else {
   reward =
     activeCat.cat.reward;
+
+  if (
+  activeCat.shiny
+) {
+  reward =
+    Math.floor(
+      reward * 1.5
+    );
+}
 }
 
 if (

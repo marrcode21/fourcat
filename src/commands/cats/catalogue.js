@@ -56,6 +56,21 @@ ${rarityEmoji(
         )
         .join("\n\n");
 
+const shinyCats =
+  cats
+    .map(
+      cat =>
+`✨ Shiny ${cat.name}
+💰 ${Math.floor(
+  cat.reward * 1.5
+).toLocaleString()}
+${rarityEmoji(
+  cat.rarity
+)}
+⭐ 1% Catch Chance`
+    )
+    .join("\n\n");
+
     const secretList =
       secretCats
         .map(
@@ -83,6 +98,12 @@ ${rarityEmoji(
           },
           {
             name:
+              "✨ Shiny Cats",
+            value:
+              shinyCats
+          },
+          {
+            name:
               "👑 Secret Cats",
             value:
               secretList
@@ -91,7 +112,7 @@ ${rarityEmoji(
         .setFooter({
           text:
             `Total Cats: ${
-              cats.length +
+              (cats.length * 2) +
               secretCats.length
             }`
         });
