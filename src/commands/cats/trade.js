@@ -114,26 +114,32 @@ sender.inventory
   .slice(0, 25)
   .map((catId, index) => {
 
-    const cat =
-      [...cats, ...secretCats]
-        .find(
-          c => c.id === catId
-        );
+const cleanId =
+  catId.startsWith(
+    "shiny_"
+  )
+    ? catId.replace(
+        "shiny_",
+        ""
+      )
+    : catId;
+
+const cat =
+  [...cats, ...secretCats]
+    .find(
+      c => c.id === cleanId
+    );
 
 return {
   label:
-    cat
-      ? `${cat.emoji} ${cat.name}`
-      : catId,
+    `${catId.startsWith("shiny_") ? "✨ " : ""}${cat?.emoji || ""} ${cat?.name || catId}`,
 
   description:
-    cat
-      ? (
-          cat.secret
-            ? "Secret Cat"
-            : cat.rarity
-        )
-      : "Unknown",
+    catId.startsWith("shiny_")
+      ? "✨ Shiny Cat"
+      : cat?.secret
+      ? "👑 Secret Cat"
+      : cat?.rarity,
 
   value:
     String(index)
@@ -182,9 +188,27 @@ senderIndex =
 const senderCat =
   sender.inventory[senderIndex];
 
+const senderCatData =
+  [...cats, ...secretCats]
+    .find(
+      c =>
+        c.id ===
+        senderCat.replace(
+          "shiny_",
+          ""
+        )
+    );
+
+const senderCatName =
+  senderCat.startsWith(
+    "shiny_"
+  )
+    ? `✨ Shiny ${senderCatData.name}`
+    : `${senderCatData.emoji} ${senderCatData.name}`;
+
     await i.update({
       content:
-        `✅ Selected: **${senderCat}**`,
+        `✅ Selected: **${senderCatName}**`,
       components: []
     });
 
@@ -201,11 +225,21 @@ receiver.inventory
   .slice(0, 25)
   .map((catId, index) => {
 
-    const cat =
-      [...cats, ...secretCats]
-        .find(
-          c => c.id === catId
-        );
+const cleanId =
+  catId.startsWith(
+    "shiny_"
+  )
+    ? catId.replace(
+        "shiny_",
+        ""
+      )
+    : catId;
+
+const cat =
+  [...cats, ...secretCats]
+    .find(
+      c => c.id === cleanId
+    );
 
 return {
   label:
