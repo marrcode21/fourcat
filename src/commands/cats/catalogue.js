@@ -56,20 +56,10 @@ ${rarityEmoji(
         )
         .join("\n\n");
 
-const shinyCats =
-  cats
-    .map(
-      cat =>
-`✨ Shiny ${cat.name}
-💰 ${Math.floor(
-  cat.reward * 1.5
-).toLocaleString()}
-${rarityEmoji(
-  cat.rarity
-)}
-⭐ 1% Catch Chance`
-    )
-    .join("\n\n");
+    const shinyInfo =
+    `⭐ Spawn Chance: 1%
+    💰 Reward Bonus: +50%
+    ✨ All normal cats can appear as shiny variants`;
 
     const secretList =
       secretCats
@@ -96,8 +86,8 @@ ${rarityEmoji(
             inline: false
           },
           {
-            name: "✨ SHINY CATS",
-            value: shinyCats,
+            name: "✨ SHINY VARIANTS",
+            value: shinyInfo,
             inline: false
           },
           {
@@ -106,16 +96,19 @@ ${rarityEmoji(
             inline: false
           }
         )
+
         .setFooter({
           text:
-            `Total Cats: ${
-              (cats.length * 2) +
-              secretCats.length
-            }`
+          `Total Obtainable Cats: ${totalCats}`
         });
+
+    const totalCats =
+        cats.length +
+        cats.length +
+        secretCats.length;
 
     await interaction.reply({
       embeds: [embed]
-    });
+    })
   }
 };

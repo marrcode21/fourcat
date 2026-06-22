@@ -10,14 +10,14 @@ const getUser =
     "../../utils/getUser"
   );
 
-const cats =
-  require(
-    "../../data/cats"
-  );
-
 const secretCats =
   require(
     "../../data/secretCats"
+  );
+
+const cats =
+  require(
+    "../../data/cats"
   );
 
 module.exports = {
@@ -85,6 +85,49 @@ const completion =
           )
       ).length;
 
+    const secretCount =
+      user.inventory.filter(
+        catId => {
+
+          const cleanId =
+            catId.replace(
+              "shiny_",
+              ""
+            );
+
+          return secretCats.some(
+            cat =>
+              cat.id === cleanId
+          );
+        }
+      ).length;
+
+    let collectorRank =
+      "Begineer";
+
+    if (completion >= 100) {
+      collectorRank =
+        "Master Collector";
+    }
+    else if (
+      completion >= 75
+    ) {
+      collectorRank =
+        "Elite Collector";
+    }
+    else if (
+      completion >= 50
+    ) {
+      collectorRank =
+        "Collector";
+    }
+    else if (
+      completion >= 25
+    ) {
+      collectorRank =
+        "Hunter";
+    }
+
     const embed =
       new EmbedBuilder()
         .setTitle(
@@ -96,14 +139,6 @@ const completion =
               "🐱 Cats",
             value:
               `${user.cats}`,
-            inline:
-              true
-          },
-          {
-            name:
-              "🎯 Total Catches",
-            value:
-              `${user.totalCatsCaught}`,
             inline:
               true
           },
@@ -124,10 +159,18 @@ const completion =
           },
           {
             name:
+              "🎯 Total Catches",
+            value:
+              `${user.totalCatsCaught}`,
+            inline:
+              true
+          },
+          {
+            name:
               "📚 Collection",
             value:
               `${uniqueCats}/${totalCats}
-(${completion.toFixed(1)}%)`,
+              (${completion.toFixed(1)}%)`,
             inline:
               true
           },
@@ -140,8 +183,29 @@ const completion =
                 : "None",
             inline:
               true
+          },
+          {
+            name:
+              "🤝 Trades",
+            value:
+              `${user.totalTrades || 0}`,
+            inline:
+              true
+          },
+          {
+            name:
+              "🏆 Rank",
+            value:
+              collectorRank,
+            inline:
+              true
           }
         );
+
+    embed.setFooter({
+      text:
+        `FourCat v1.2.0`
+    });
 
     await interaction.reply({
       embeds:

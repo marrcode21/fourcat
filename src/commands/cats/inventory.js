@@ -6,6 +6,9 @@ const {
 const getUser =
   require("../../utils/getUser");
 
+const secretCats =
+  require("../../data/secretCats")
+
 const cats =
   require("../../data/cats");
 
@@ -76,12 +79,13 @@ module.exports = {
                 : id;
 
             const cat =
-              cats.find(
-                c =>
-                  c.id ===
-                  realId
-              );
-
+              [...cats, ...secretCats]
+                  .find(
+                    c =>
+                      c.id ===
+                      realId
+                  );
+                  
             // prevent crash
             if (!cat) {
               return `❓ Unknown Cat (${id}) × ${amount}`;
@@ -91,19 +95,68 @@ module.exports = {
               shiny
                 ? "✨ "
                 : ""
-            }${cat.emoji} **${
+            }${
+              cat.secret
+                ? "👑 "
+                : ""
+            }${
+              cat.emoji
+            } **${
               shiny
                 ? "Shiny "
                 : ""
             }${
               cat.name
             }**
-× ${amount}
-(${cat.rarity})`;
+            x ${amount}
+            (${
+              cat.secret
+                ? "Secret"
+                : cat.rarity
+            })`;
           }
         )
         .filter(Boolean)
         .join("\n");
+
+    const totalCats =
+      user.inventory.length;
+
+    const uniqueCats =
+      new Set(
+        user.inventory.map(
+          c =>
+            c.replace(
+              "shiny_",
+              ""
+            )
+        )
+      ).size;
+
+    const shinyCount =
+      user.inventory.filter(
+        c =>
+          c.startsWith(
+            "shiny_"
+          )
+      ).length;
+
+    const secretCount =
+      user.inventory.filter(
+        c => {
+
+          const clean =
+            c.replace(
+              "shiny_",
+              ""
+            );
+
+          return secretCats.some(
+            s =>
+              s.id === clean
+          );
+        }
+      ).length;
 
     const embed =
       new EmbedBuilder()
@@ -111,8 +164,14 @@ module.exports = {
           `🎒 ${interaction.user.username}'s Inventory`
         )
         .setDescription(
-          inventory ||
-            "No cats."
+        `📦 Total Cats: ${totalCats}
+        📚 Unique Cats: ${uniqueCats}
+        ✨ Shiny Cats: ${shinyCount}
+        👑 Secret Cats: ${secretCount}
+
+        ━━━━━━━━━━━━
+
+        ${inventory || "No cats."}`
         );
 
     await interaction.reply({

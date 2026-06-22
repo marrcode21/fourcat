@@ -1,201 +1,143 @@
 const {
-  SlashCommandBuilder,
-  EmbedBuilder
+SlashCommandBuilder,
+EmbedBuilder
 } = require("discord.js");
 
 const getUser =
-  require("../../utils/getUser");
+require("../../utils/getUser");
 
 module.exports = {
-  data:
-    new SlashCommandBuilder()
-      .setName("daily")
-      .setDescription(
-        "Get Daily cats"
-      ),
+data:
+new SlashCommandBuilder()
+.setName("daily")
+.setDescription(
+"Claim daily reward"
+),
 
-  async execute(
-    interaction
-  ) {
-    const user =
-      await getUser(
-        interaction.user.id
-      );
+async execute(
+interaction
+) {
 
-    const now =
-      new Date();
+const user =
+  await getUser(
+    interaction.user.id
+  );
 
-    if (
-      user.dailyCooldown &&
-      user.dailyCooldown > now
-    ) {
-      const timeLeft =
-        Math.floor(
-          (
-            user.dailyCooldown -
-            now
-          ) /
-            1000 /
-            60
-        );
+const now =
+  Date.now();
 
-      return interaction.reply({
-        content:
-          `⏳ You already claimed daily.\nCome back in **${timeLeft} minutes**.`,
-        flags: 64
-      });
+const cooldown =
+  24 * 60 * 60 * 1000;
+
+if (
+  user.lastDaily &&
+  now - user.lastDaily <
+    cooldown
+) {
+
+  const remaining =
+    cooldown -
+    (now -
+      user.lastDaily);
+
+  const hours =
+    Math.floor(
+      remaining /
+      3600000
+    );
+
+  const minutes =
+    Math.floor(
+      (
+        remaining %
+        3600000
+      ) / 60000
+    );
+
+  return interaction.reply({
+    content:
+      `⏳ You already claimed your daily reward.\nCome back in ${hours}h ${minutes}m.`,
+    flags: 64
+  });
+
+}
+
+let reward;
+let tier;
+
+const roll =
+  Math.random() * 100;
+
+if (roll < 0.1) {
+  reward = 25000;
+  tier = "👑 GOD TIER";
+}
+if (roll < 1) {
+  reward = 5000;
+  tier = "🌈 Jackpot";
+}
+else if (roll < 20) {
+  reward = 1000;
+  tier = "🟣 Epic"
+}
+else if (roll < 50) {
+  reward = 750;
+  tier = "🔵 Rare"
+}
+else {
+  reward = 500;
+  tier = "⚪ Common";
+}
+
+user.cats +=
+  reward;
+
+if (tier === "👑 GOD TIER") {
+
+  await interaction.channel.send(
+    `🚨 ${interaction.user} just hit the GOD TIER Daily Reward and won **25,000 Cats**!`
+  );
+}
+
+user.lastDaily =
+  new Date();
+
+await user.save();
+
+const embed =
+  new EmbedBuilder()
+    .setTitle(
+      "🎁 Daily Reward"
+    )
+    .setDescription(
+      `You opened today's reward!
+      
+      ${tier}
+      
+      💰 Reward: **${reward.toLocaleString()} Cats**`
+    )
+    .addFields(
+    {
+      name:
+        "🎲 Reward Tier",
+      value:
+        tier,
+      inline:
+        true
+    },
+    {
+      name:
+        "💰 Balance",
+      value:
+        user.cats.toLocaleString(),
+      inline:
+        true
     }
+    )
 
-    const rewards = [
-      500,
-      750,
-      1000,
-      1250,
-      1500,
-      2000,
-      3000
-    ];
+await interaction.reply({
+  embeds: [embed]
+});
 
-    // =====================
-    // STREAK SYSTEM
-    // =====================
-
-    if (
-      user.lastDaily
-    ) {
-      const diff =
-        now -
-        user.lastDaily;
-
-      const oneDay =
-        24 *
-        60 *
-        60 *
-        1000;
-
-      if (
-        diff >= oneDay &&
-        diff <
-          oneDay * 2
-      ) {
-        user.dailyStreak++;
-      }
-
-      else if (
-        diff >=
-        oneDay * 2
-      ) {
-        user.dailyStreak = 1;
-      }
-    }
-
-    else {
-      user.dailyStreak = 1;
-    }
-
-    if (
-      user.dailyStreak > 7
-    ) {
-      user.dailyStreak = 7;
-    }
-
-    const reward =
-      rewards[
-        user.dailyStreak -
-          1
-      ];
-
-    user.cats += reward;
-
-    // =====================
-    // DAY 7 BONUS
-    // =====================
-
-    let bonusText =
-      "None";
-
-    if (
-      user.dailyStreak ===
-      7
-    ) {
-
-      if (
-        !user.packs
-      ) {
-        user.packs = {};
-      }
-
-      user.packs.rare =
-        (
-          user.packs
-            .rare || 0
-        ) + 1;
-
-      bonusText =
-        "Rare Pack x1";
-    }
-
-    user.lastDaily =
-      now;
-
-    user.dailyCooldown =
-      new Date(
-        now.getTime() +
-          24 *
-            60 *
-            60 *
-            1000
-      );
-
-    const achievementSystem =
-      require(
-        "../../systems/achievementSystem"
-      );
-
-    const unlocked =
-      await achievementSystem(
-        user
-      );
-
-    await user.save();
-
-    const embed =
-      new EmbedBuilder()
-        .setTitle(
-          "📅 Daily Reward"
-        )
-        .setDescription(
-          "Come back every day to build your streak!"
-        )
-        .addFields(
-          {
-            name:
-              "🔥 Streak",
-            value:
-              `${user.dailyStreak}/7`,
-            inline:
-              true
-          },
-          {
-            name:
-              "🐱 Reward",
-            value:
-              `${reward.toLocaleString()} Cats`,
-            inline:
-              true
-          },
-          {
-            name:
-              "🎁 Bonus",
-            value:
-              bonusText,
-            inline:
-              true
-          }
-        );
-
-    await interaction.reply({
-      embeds: [embed]
-    });
-  }
+}
 };

@@ -181,37 +181,61 @@ module.exports = {
         );
       }
 
-      const embed =
-        new EmbedBuilder()
-          .setTitle(
-            `📖 /${command}`
-          )
-          .addFields(
-            {
-              name:
-                "Description",
-              value:
-                cmd.description
-            },
-            {
-              name:
-                "Usage",
-              value:
-                `\`${cmd.usage}\``
-            },
-            {
-              name:
-                "Reward",
-              value:
-                cmd.reward ||
-                "None"
-            }
-          );
-
-      return interaction.reply({
-        embeds:
-          [embed]
-      });
+const embed =
+  new EmbedBuilder()
+    .setTitle(
+      "📖 FourCat Help"
+    )
+    .setDescription(
+      "Welcome to FourCat v1.2.0!"
+    )
+    .addFields(
+      {
+        name:
+          "🐱 Cat Commands",
+        value:
+`/catch
+/catalogue
+/catinfo
+/inventory
+/collection`
+      },
+      {
+        name:
+          "📊 Progress",
+        value:
+`/stats
+/achievements
+/profile`
+      },
+      {
+        name:
+          "💰 Economy",
+        value:
+`/daily
+/leaderboard`
+      },
+      {
+        name:
+          "🤝 Social",
+        value:
+`/trade`
+      },
+      {
+        name:
+          "✨ v1.2.0 Features",
+        value:
+`✨ Shiny Cats
+📚 Collection
+🐱 Cat Info
+🎲 Daily Tiers
+🏆 Collector Rank`
+      }
+    )
+    .setFooter({
+      text:
+        "FourCat v1.2.0"
+    });
     }
 
     // normal help

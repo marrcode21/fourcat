@@ -5,6 +5,25 @@ module.exports = {
   async execute(
     interaction
   ) {
+
+    if (
+      interaction.isAutocomplete()
+    ) {
+      const command =
+        interaction.client.commands.get(
+          interaction.commandName
+        );
+
+      if (
+        command &&
+        command.autocomplete
+      ) {
+        return command.autocomplete(
+          interaction
+        );
+      }
+    }
+
     if (
       !interaction.isChatInputCommand()
     )

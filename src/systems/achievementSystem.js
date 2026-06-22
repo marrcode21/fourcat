@@ -13,6 +13,131 @@ module.exports =
         "first_catch"
       )
     ) {
+
+    if (
+      user.totalCatsCaught >= 500 &&
+      !user.achievements.includes(
+        "cat_god"
+      )
+    ) {
+      user.achievements.push(
+        "cat_god"
+      );
+
+      rewards.push(
+        "🐈 Cat God"
+      );
+    }
+
+    const uniqueCats =
+      new Set(
+        user.inventory.map(
+          c =>
+            c.replace(
+              "shiny_",
+              ""
+            )
+        )
+      ).size;
+
+    if (
+  uniqueCats >= 2 &&
+  !user.achievements.includes(
+    "collector_bronze"
+  )
+) {
+  user.achievements.push(
+    "collector_bronze"
+  );
+
+  rewards.push(
+    "🥉 Collector"
+  );
+}
+
+if (
+  uniqueCats >= 4 &&
+  !user.achievements.includes(
+    "collector_silver"
+  )
+) {
+  user.achievements.push(
+    "collector_silver"
+  );
+
+  rewards.push(
+    "🥈 Senior Collector"
+  );
+}
+
+if (
+  uniqueCats >= 8 &&
+  !user.achievements.includes(
+    "collector_gold"
+  )
+) {
+  user.achievements.push(
+    "collector_gold"
+  );
+
+  rewards.push(
+    "🥇 Master Collector"
+  );
+}
+
+const shinyCount =
+  user.inventory.filter(
+    cat =>
+      cat.startsWith(
+        "shiny_"
+      )
+  ).length;
+
+  if (
+  shinyCount >= 1 &&
+  !user.achievements.includes(
+    "first_shiny"
+  )
+) {
+  user.achievements.push(
+    "first_shiny"
+  );
+
+  rewards.push(
+    "✨ First Shiny"
+  );
+}
+
+if (
+  shinyCount >= 10 &&
+  !user.achievements.includes(
+    "shiny_hunter"
+  )
+) {
+  user.achievements.push(
+    "shiny_hunter"
+  );
+
+  rewards.push(
+    "🌟 Shiny Hunter"
+  );
+}
+
+if (
+  shinyCount >= 50 &&
+  !user.achievements.includes(
+    "shiny_master"
+  )
+) {
+  user.achievements.push(
+    "shiny_master"
+  );
+
+  rewards.push(
+    "💎 Shiny Master"
+  );
+}
+
       user.achievements.push(
         "first_catch"
       );
@@ -36,6 +161,21 @@ module.exports =
         "😼 Cat Hunter"
       );
     }
+
+    if (
+  user.secretCatsCaught >= 1 &&
+  !user.achievements.includes(
+    "secret_finder"
+  )
+) {
+  user.achievements.push(
+    "secret_finder"
+  );
+
+  rewards.push(
+    "👑 Secret Finder"
+  );
+}
 
     if (
   user.secretCatsCaught >= 1 &&

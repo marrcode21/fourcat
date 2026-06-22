@@ -70,6 +70,45 @@ const achievements = {
   onde_mande_god: {
     emoji: "⚡",
     name: "Onde Mande God"
+  },
+  first_shiny: {
+    emoji: "✨",
+    name: "First Shiny"
+  },
+
+  shiny_hunter: {
+    emoji: "🌟",
+    name: "Shiny Hunter"
+  },
+
+  shiny_master: {
+    emoji: "💎",
+    name: "Shiny Master"
+  },
+
+  secret_finder: {
+    emoji: "👑",
+    name: "Secret Finder"
+  },
+
+  collector_bronze: {
+    emoji: "🥉",
+    name: "Collector"
+  },
+
+  collector_silver: {
+    emoji: "🥈",
+    name: "Senior Collector"
+  },
+
+  collector_gold: {
+    emoji: "🥇",
+    name: "Master Collector"
+  },
+
+  cat_god: {
+    emoji: "🐈",
+    name: "Cat God"
   }
 };
 

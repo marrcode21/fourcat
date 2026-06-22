@@ -34,161 +34,139 @@ module.exports = {
     const embed =
       new EmbedBuilder()
         .setTitle(
-          "🎉 FourCat v1.1.0"
+          "🎉 FourCat v1.2.0"
         )
         .setDescription(
-`🎉 FourCat v1.1.0 Update
+`🐱 Welcome to FourCat v1.2.0!
 
-Thank you for playing FourCat!
+This update focuses on improving progression, collection tracking, achievements, and overall user experience.
 
-🚀 New Features
-☕ Brew System
+✨ New Features
 
-Use /brew to create coffee boosts that increase catch rewards.
+🐱 Shiny Cat System
 
-🔮 Prism System
+Shiny Cats now appear in the catalogue.
+Shiny Cats are displayed properly in inventory.
+Shiny Cats can be traded between players.
+Shiny variants are now counted separately from normal cats.
 
-Use /prism to convert resources into valuable rewards.
+📚 Collection Improvements
 
-🎰 Slots
+Collection progress now correctly counts unique cats.
+Better tracking for completion percentage.
+Improved collection display across commands.
 
-Try your luck with /slots.
+🔍 New Cat Information System
 
-Match symbols to win Cats and unlock special achievements.
+Added `/catinfo`
+View detailed information about every cat:
 
-🎲 Roulette
+  Name
+  Rarity
+  Reward
+  Type
+  Shiny reward value
 
-Use /roulette to gamble your Cats.
+📅 Daily Reward Improvements
 
-Double your winnings or lose everything.
-
-🎯 Casino
-
-A brand-new casino experience has been added through /casino.
-
-Multiple gambling options are now available for players who enjoy taking risks.
-
-👑 Secret Cats
-
-A new Secret rarity has arrived.
-
-Onde Mande
-
-Features:
-• Extremely rare spawn chance
-• 4 custom variants
-• Unique artwork
-• Rewards from 10,000 to 20,000 Cats
-
-Catch one if you're lucky enough to see it.
+Better daily reward progression.
+Daily streak tracking improvements.
+More informative reward messages.
 
 🏆 Achievement Expansion
 
-New achievement categories added:
+Added new Secret Cat achievements:
 
-Catching
+👑 Onde Mande Hunter
+🌟 Onde Mande Collector
+🔥 Onde Mande Master
+⚡ Onde Mande God
 
-• First Catch
-• Cat Hunter
-• Cat Master
+📖 Improved Help Command
 
-Daily Rewards
+Updated command list.
+Added information for newer features.
+Cleaner category layout.
 
-• Daily Enjoyer
-• Week Warrior
+🎒 Inventory Improvements
 
-Trading
-
-• Trader
-
-Packs
-
-• Pack Opener
-
-Casino
-
-• Lucky Cat
-• Jackpot
-
-Secret Cats
-
-• Onde Mande Hunter
-• Onde Mande Collector
-• Onde Mande Master
-• Onde Mande God
-
-📚 Catalogue Update
-
-• Secret Cats section added
-• Rarity display improved
-• Total cat count added
-• Better visual formatting
-
-📊 Stats Update
-
-New statistics:
-• Secret Cats Caught
-• Total Trades
-• Packs Opened
-• Daily Streak Progress
+Better shiny display.
+Improved duplicate counting.
+Legacy inventory protection.
+Unknown cat protection to prevent crashes.
 
 🤝 Trade Improvements
 
-• Better confirmation system
-• Achievement integration
-• Trade progression tracking
+Better cat selection menu.
+Improved shiny cat support.
+Improved trade confirmation system.
+Added trade cancellation button.
+Better error handling.
 
-🎁 Pack Improvements
+📚 Catalogue Improvements
 
-• Pack progression support
-• Achievement support
-• Better reward tracking
+Separate sections for:
 
-⚡ Coffee Boost System
+  Normal Cats
+  Shiny Cats
+  Secret Cats
 
-Coffee now boosts cat-catching rewards for a limited time.
+Improved readability.
 
-🛠️ Fixes & Improvements
+More accurate total cat count.
 
-• Fixed command registration issues
-• Fixed duplicate command problems
-• Fixed interaction response errors
-• Fixed cooldown issues
-• Improved database stability
-• Improved command reliability
-• Improved achievement tracking
-• General performance improvements
+📊 Stats V2
 
-📌 Available Commands
+New statistics tracking:
 
-/achievements
-/bal
-/brew
-/buy
-/casino
-/catalogue
-/catch
-/daily
-/gift
-/help
-/inventory
-/leaderboards
-/openpack
-/packs
-/ping
-/prism
-/roulette
-/setup
-/slots
-/stats
-/store
-/trade
+Total Shinies
+Secret Cats Caught
+Collection Completion
+Fastest Catch
+Daily Streak Progress
 
-Happy Hunting! 🐱`
+🏅 Leaderboards Expansion
+
+Added new leaderboard categories:
+
+📚 Top Collectors
+✨ Shiny Hunters
+👑 Secret Hunters
+
+Leaderboard rankings now display:
+
+🥇 Gold Rank
+🥈 Silver Rank
+🥉 Bronze Rank
+
+instead of only #1, #2, #3.
+
+🛠 Bug Fixes
+
+Fixed shiny cats not displaying correctly.
+Fixed collection progress showing incorrect totals.
+Fixed trade crashes when trading shiny cats.
+Fixed missing catalogue entries.
+Fixed inventory issues with legacy cat data.
+Improved stability across multiple commands.
+
+🚀 What's Next?
+
+Planned for v1.3.0:
+
+Cat Packs V2
+More Cat Types
+New Secret Cats
+Collection Rewards
+Profile Cards
+Seasonal Events
+
+Thank you for playing FourCat! 🐾
+`
         )
         .setFooter({
           text:
-            "FourCat v1.1.0"
+            "FourCat v1.2.0"
         })
         .setTimestamp();
 
