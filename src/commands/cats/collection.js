@@ -28,8 +28,6 @@ module.exports = {
       await getUser(
         interaction.user.id
       );
-    }
-  };
 
 const normalOwned =
   new Set(
@@ -163,3 +161,9 @@ const embed =
 (${overall.toFixed(1)}%)`
       }
     );
+await interaction.reply({
+  embeds: [embed]
+});
+
+  }
+};
