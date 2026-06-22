@@ -71,6 +71,11 @@ ${rarityEmoji(
         )
         .join("\n\n");
 
+    const totalCats =
+      cats.length +
+      cats.length +
+      secretCats.length;
+
     const embed =
       new EmbedBuilder()
         .setTitle(
@@ -101,11 +106,6 @@ ${rarityEmoji(
           text:
           `Total Obtainable Cats: ${totalCats}`
         });
-
-    const totalCats =
-        cats.length +
-        cats.length +
-        secretCats.length;
 
     await interaction.reply({
       embeds: [embed]
