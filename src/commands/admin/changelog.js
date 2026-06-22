@@ -166,7 +166,7 @@ Thank you for playing FourCat! 🐾
         )
         .setFooter({
           text:
-            "FourCat v1.2.0"
+            "FourCat v1.2.1"
         })
         .setTimestamp();
 
