@@ -58,7 +58,7 @@ async autocomplete(
         filtered.map(
             cat => ({
                 name:
-                    `${cat.emoji ?? "👑"} ${cat.name}`,
+                    `${cat.emoji || "🐱"} ${cat.name}`,
                 value:
                     cat.id
             })
@@ -125,7 +125,7 @@ const embed =
         value:
           cat.secret
             ? "Secret"
-            : cat.rarity,
+            : (cat.rarity || "Impossible"),
         inline: true
       },
       {
