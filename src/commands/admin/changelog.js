@@ -58,7 +58,7 @@ Improved collection display across commands.
 
 🔍 New Cat Information System
 
-Added `/catinfo`
+Added /catinfo
 View detailed information about every cat:
 
   Name
