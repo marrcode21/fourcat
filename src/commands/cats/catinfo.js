@@ -34,7 +34,7 @@ async autocomplete(
     interaction
 ) {
     const focused =
-        interaction.option.getFocused();
+        interaction.options.getFocused();
 
     const allCats =
         [
