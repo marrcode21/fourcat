@@ -182,11 +182,25 @@ senderCollector.on(
       });
     }
 
+if (
+  !i.values?.length
+) {
+  return;
+}
+
 senderIndex =
   Number(i.values[0]);
 
 const senderCat =
   sender.inventory[senderIndex];
+
+if (!senderCat) {
+  return i.reply({
+    content:
+      "❌ Cat no longer exists.",
+    flags: 64
+  });
+}
 
 const senderCatData =
   [...cats, ...secretCats]
@@ -294,12 +308,26 @@ return {
             flags: 64
           });
         }
+    
+if (
+  !j.values?.length
+) {
+  return;
+}
 
 receiverIndex =
   Number(j.values[0]);
 
 const receiverCat =
   receiver.inventory[receiverIndex];
+
+if (!senderCat) {
+  return i.reply({
+    content:
+      "❌ Cat no longer exists.",
+    flags: 64
+  });
+}
 
 const senderBaseId =
   senderCat.startsWith(
@@ -420,6 +448,8 @@ const confirmRow =
           ]
         });
 
+        receiverCollector.stop();
+
         const confirmCollector =
           tradeMsg.createMessageComponentCollector({
             time: 60000
@@ -454,102 +484,164 @@ confirmCollector.on(
         k.user.id
       )
     ) {
+      return k.reply({
+        content:
+          "❌ Not your trade.",
+        flags: 64
+      });
+    }
+
+    if (
+      confirmed.has(
+        k.user.id
+      )
+    ) {
+      return k.reply({
+        content:
+          "❌ You already confirmed.",
+        flags: 64
+      });
+    }
+
+    confirmed.add(
+      k.user.id
+    );
+
+    await k.reply({
+      content:
+        "✅ Confirmation recorded.",
+      flags: 64
+    });
+
+    if (
+      confirmed.size < 2
+    ) {
       return;
     }
 
-const sIndex =
-  senderIndex;
+    try {
 
-const rIndex =
-  receiverIndex;
-
-            if (
-              sIndex === -1 ||
-              rIndex === -1
-            ) {
-              return tradeMsg.edit({
-                content:
-                  "❌ Trade invalid.",
-                embeds: [],
-                components: []
-              });
-            }
-
-            sender.inventory.splice(
-              sIndex,
-              1
-            );
-
-            receiver.inventory.splice(
-              rIndex,
-              1
-            );
-
-            sender.inventory.push(
-              receiverCat
-            );
-
-            receiver.inventory.push(
-              senderCat
-            );
-
-            sender.totalTrades +=
-              1;
-
-            receiver.totalTrades +=
-              1;
-
-            const senderUnlocked =
-              await achievementSystem(
-                sender
-              );
-
-            const receiverUnlocked =
-              await achievementSystem(
-                receiver
-              );
-
-            await sender.save();
-            await receiver.save();
-
-            confirmCollector.stop();
-
-            let message =
-              "✅ Trade completed!";
-
-            if (
-              senderUnlocked.length ||
-              receiverUnlocked.length
-            ) {
-              message +=
-                "\n\n🏆 Achievements Unlocked:";
-            }
-
-            if (
-              senderUnlocked.length
-            ) {
-              message +=
-                `\n${interaction.user.username}: ${senderUnlocked.join(", ")}`;
-            }
-
-            if (
-              receiverUnlocked.length
-            ) {
-              message +=
-                `\n${target.username}: ${receiverUnlocked.join(", ")}`;
-            }
-
-            return tradeMsg.edit({
-              content:
-                message,
-              embeds: [],
-              components: []
-            });
-          }
+      const freshSender =
+        await getUser(
+          interaction.user.id
         );
+
+      const freshReceiver =
+        await getUser(
+          target.id
+        );
+
+      const senderCatNow =
+        freshSender.inventory[
+          senderIndex
+        ];
+
+      const receiverCatNow =
+        freshReceiver.inventory[
+          receiverIndex
+        ];
+
+      if (
+        !senderCatNow ||
+        !receiverCatNow
+      ) {
+        confirmCollector.stop();
+
+        return tradeMsg.edit({
+          content:
+            "❌ Trade failed. One of the cats no longer exists.",
+          embeds: [],
+          components: []
+        });
       }
-    );
-  }
+
+      freshSender.inventory.splice(
+        senderIndex,
+        1
+      );
+
+      freshReceiver.inventory.splice(
+        receiverIndex,
+        1
+      );
+
+      freshSender.inventory.push(
+        receiverCatNow
+      );
+
+      freshReceiver.inventory.push(
+        senderCatNow
+      );
+
+      freshSender.totalTrades += 1;
+      freshReceiver.totalTrades += 1;
+
+      const senderUnlocked =
+        await achievementSystem(
+          freshSender
+        );
+
+      const receiverUnlocked =
+        await achievementSystem(
+          freshReceiver
+        );
+
+      await Promise.all([
+      freshSender.save(),
+      freshReceiver.save()
+      ]);
+
+      confirmCollector.stop();
+
+      let message =
+        "✅ Trade completed!";
+
+      if (
+        senderUnlocked.length ||
+        receiverUnlocked.length
+      ) {
+        message +=
+          "\n\n🏆 Achievements Unlocked:";
+      }
+
+      if (
+        senderUnlocked.length
+      ) {
+        message +=
+          `\n${interaction.user.username}: ${senderUnlocked.join(", ")}`;
+      }
+
+      if (
+        receiverUnlocked.length
+      ) {
+        message +=
+          `\n${target.username}: ${receiverUnlocked.join(", ")}`;
+      }
+
+      return tradeMsg.edit({
+        content:
+          message,
+        embeds: [],
+        components: []
+      });
+
+    } catch (err) {
+
+      console.error(
+        err
+      );
+
+      return tradeMsg.edit({
+        content:
+          "❌ Trade failed because data changed during the trade. Please try again.",
+        embeds: [],
+        components: []
+      });
+    }
+});
+        }
+      );
+    }
 );
 
 }
