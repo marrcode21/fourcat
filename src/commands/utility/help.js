@@ -165,78 +165,54 @@ module.exports = {
       );
 
     // detailed help
-    if (command) {
-      const cmd =
-        commandInfo[
-          command.toLowerCase()
-        ];
+if (command) {
 
-      if (!cmd) {
-        return interaction.reply(
-          {
-            content:
-              "❌ Command not found.",
-            flags: 64
-          }
-        );
-      }
+  const cmd =
+    commandInfo[
+      command.toLowerCase()
+    ];
 
-const embed =
-  new EmbedBuilder()
-    .setTitle(
-      "📖 FourCat Help"
-    )
-    .setDescription(
-      "Welcome to FourCat v1.2.0!"
-    )
-    .addFields(
-      {
-        name:
-          "🐱 Cat Commands",
-        value:
-`/catch
-/catalogue
-/catinfo
-/inventory
-/collection`
-      },
-      {
-        name:
-          "📊 Progress",
-        value:
-`/stats
-/achievements
-/profile`
-      },
-      {
-        name:
-          "💰 Economy",
-        value:
-`/daily
-/leaderboard`
-      },
-      {
-        name:
-          "🤝 Social",
-        value:
-`/trade`
-      },
-      {
-        name:
-          "✨ v1.2.0 Features",
-        value:
-`✨ Shiny Cats
-📚 Collection
-🐱 Cat Info
-🎲 Daily Tiers
-🏆 Collector Rank`
-      }
-    )
-    .setFooter({
-      text:
-        "FourCat v1.2.0"
+  if (!cmd) {
+    return interaction.reply({
+      content:
+        "❌ Command not found.",
+      flags: 64
     });
-    }
+  }
+
+  const embed =
+    new EmbedBuilder()
+      .setTitle(
+        `📖 /${command}`
+      )
+      .addFields(
+        {
+          name:
+            "📄 Description",
+          value:
+            cmd.description
+        },
+        {
+          name:
+            "⌨️ Usage",
+          value:
+            cmd.usage
+        }
+      );
+
+  if (cmd.reward) {
+    embed.addFields({
+      name:
+        "🎁 Reward",
+      value:
+        cmd.reward
+    });
+  }
+
+  return interaction.reply({
+    embeds: [embed]
+  });
+}
 
     // normal help
 const embed =
@@ -252,8 +228,7 @@ const embed =
         name:
           "🚀 Getting Started",
         value:
-`/tutorial
-/catch
+`/catch
 /daily
 /inventory
 /stats`
@@ -268,7 +243,9 @@ const embed =
 /inventory
 /trade
 /stats
-/achievements`
+/achievements
+/collection
+/catinfo`
       },
 
       {
@@ -315,7 +292,7 @@ const embed =
     )
     .setFooter({
       text:
-        "FourCat v1.1.0 • Secret Onde Mande Update"
+        "FourCat v1.2.0 • Collection Update"
     });
 
     await interaction.reply({
