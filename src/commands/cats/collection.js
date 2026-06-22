@@ -1,3 +1,36 @@
+const {
+  SlashCommandBuilder,
+  EmbedBuilder
+} = require("discord.js");
+
+const getUser =
+  require("../../utils/getUser");
+
+const cats =
+  require("../../data/cats");
+
+const secretCats =
+  require("../../data/secretCats");
+
+module.exports = {
+  data:
+    new SlashCommandBuilder()
+      .setName("collection")
+      .setDescription(
+        "View collection progress"
+      ),
+
+  async execute(
+    interaction
+  ) {
+
+    const user =
+      await getUser(
+        interaction.user.id
+      );
+    }
+  };
+
 const normalOwned =
   new Set(
     user.inventory
@@ -74,6 +107,20 @@ const overall =
   totalAvailable
 ) * 100;
 
+let rank = "🐣 Beginner";
+
+if (overall >= 25)
+  rank = "🥉 Bronze";
+
+if (overall >= 50)
+  rank = "🥈 Silver";
+
+if (overall >= 75)
+  rank = "🥇 Gold";
+
+if (overall >= 100)
+  rank = "👑 Master Collector";
+
 const embed =
   new EmbedBuilder()
     .setTitle(
@@ -116,17 +163,3 @@ const embed =
 (${overall.toFixed(1)}%)`
       }
     );
-
-let rank = "🐣 Beginner";
-
-if (overall >= 25)
-  rank = "🥉 Bronze";
-
-if (overall >= 50)
-  rank = "🥈 Silver";
-
-if (overall >= 75)
-  rank = "🥇 Gold";
-
-if (overall >= 100)
-  rank = "👑 Master Collector";
