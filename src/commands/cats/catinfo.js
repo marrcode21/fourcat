@@ -58,7 +58,7 @@ async autocomplete(
         filtered.map(
             cat => ({
                 name:
-                    `${cat.emoji} ${cat.name}`,
+                    `${cat.emoji ?? "👑"} ${cat.name}`,
                 value:
                     cat.id
             })
@@ -112,7 +112,7 @@ const shinyOwned =
 const embed =
   new EmbedBuilder()
     .setTitle(
-      `${cat.emoji} ${cat.name}`
+      `${cat.emoji ?? "👑"} ${cat.name}`
     )
     .addFields(
       {
